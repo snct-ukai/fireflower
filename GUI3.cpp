@@ -2,9 +2,10 @@
 //
 #include <cstdlib>
 #include <ctime>
+#include <random>
 #include "framework.h"
 #include "GUI3.h"
-#include "Particle.h"
+#include "manage_fireflower.h"
 
 #define MAX_LOADSTRING 100
 
@@ -125,7 +126,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 
 size_t nparticle;
-Particle* particle;
+manage_fireflower* particle;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -133,24 +134,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
         srand(static_cast<unsigned int>(time(NULL)));
-        nparticle = 5000;
-        particle = new Particle[nparticle];
+        nparticle = 400;
+        particle = new manage_fireflower(5);
         POINT cursor;
         GetCursorPos(&cursor);
         ScreenToClient(hWnd, &cursor);
-        for (size_t i = 0; i < nparticle; i++) {
-            particle[i].setCursorPos(cursor.x, cursor.y);
-            particle[i].init();
-        }
         SetTimer(hWnd, 1, 15, NULL);
+        particle->init();
         break;
     case WM_TIMER:
         GetCursorPos(&cursor);
         ScreenToClient(hWnd, &cursor);
-        for (size_t i = 0; i < nparticle; i++) {
-            particle[i].setCursorPos(cursor.x, cursor.y);
-            particle[i].update();
-        }
+        particle->update();
         InvalidateRect(hWnd, NULL, TRUE);
         break;
     case WM_COMMAND:
@@ -175,19 +170,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: HDC を使用する描画コードをここに追加してください...
-            for (size_t i = 0; i < nparticle; i++) {
-                particle[i].setHDC(hdc);
-                particle[i].draw();
-            }
+            particle->setHDC(hdc);
+            particle->draw();
             EndPaint(hWnd, &ps);
         }
         break;
     case WM_CLOSE:
         KillTimer(hWnd, 1);
-        for (size_t i = 0; i < nparticle; i++) {
-            particle[i].clean();
-        }
-        delete[] particle;
+        particle->clean();
+        delete particle;
         DestroyWindow(hWnd);
         break;
     case WM_DESTROY:

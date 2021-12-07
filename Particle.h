@@ -29,6 +29,6 @@ public:
 	void draw(void);
 	void setCursorPos(int mx, int my);
 	void setHDC(HDC hdc);
+	void setPosition(int x, int y);
 	double rand(void);
 };
-
