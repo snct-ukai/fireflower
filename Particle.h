@@ -20,6 +20,9 @@ private:
 	double life;
 	COLORREF color;
 	HDC hdc;
+	int R;
+	int G;
+	int B;
 public:
 	Particle(void);
 	~Particle(void);
@@ -31,4 +34,5 @@ public:
 	void setHDC(HDC hdc);
 	void setPosition(int x, int y);
 	double rand(void);
+	void setColor(int R, int G, int B);
 };
