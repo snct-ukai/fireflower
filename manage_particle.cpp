@@ -68,7 +68,7 @@ void manage_particle::init() {
 		particle[i].init();
 		particle[i].setColor(r, g, b);
 	}
-	state = rndx(mt) == 300;
+	state = rnds(mt) == 300;
 }
 
 void manage_particle::update() {
