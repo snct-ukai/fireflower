@@ -4,8 +4,9 @@
 
 std::random_device Rand;
 std::mt19937 mt(Rand());
-std::uniform_int_distribution<> rndx(200, 600);
-std::uniform_int_distribution<> rndy(200, 400);
+std::uniform_int_distribution<> rndx(300, 900);
+std::uniform_int_distribution<> rndy(300, 700);
+std::uniform_int_distribution<> rnds(0, 900);
 
 manage_particle::manage_particle() : state(false), particles(600) {
 	particle = new Particle[particles];
@@ -16,25 +17,30 @@ manage_particle::~manage_particle() {
 }
 
 void manage_particle::init() {
-	if (!state) {
-		int x = rndx(mt);
-		int y = rndy(mt);
-		for (int i = 0; i < particles; i++) {
-			particle[i].setPosition(x, y);
-			particle[i].init();
-		}
-		state = true;
+	int x = rndx(mt);
+	int y = rndy(mt);
+	for (int i = 0; i < particles; i++) {
+		particle[i].setPosition(x, y);
+		particle[i].init();
 	}
+	state = rndx(mt) == 300;
 }
 
 void manage_particle::update() {
-	try{
-		for (int i = 0; i < particles; i++) {
-			particle[i].update();
+	if (state) {
+		try {
+			for (int i = 0; i < particles; i++) {
+				particle[i].update();
+			}
+		}
+		catch (std::exception e) {
+			state = false;
+			clean();
+			init();
 		}
 	}
-	catch(std::exception e){
-		state = false;
+	else {
+		clean();
 		init();
 	}
 }

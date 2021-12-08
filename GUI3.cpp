@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "GUI3.h"
 #include "manage_fireflower.h"
+#include "manage_particle.h"
 
 #define MAX_LOADSTRING 100
 
@@ -101,7 +102,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 1200, 1000, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -135,7 +136,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         srand(static_cast<unsigned int>(time(NULL)));
         nparticle = 400;
-        particle = new manage_fireflower(5);
+        particle = new manage_fireflower(7);
         POINT cursor;
         GetCursorPos(&cursor);
         ScreenToClient(hWnd, &cursor);
